@@ -1,0 +1,31 @@
+
+#nav li {
+	display: block;
+	float: left;
+	list-style-type: none;
+}
+
+#nav li a {
+font-size: 13px;
+padding: 10px 58.5px;
+text-transform: uppercase;
+text-decoration:none;
+margin:auto;
+text-align: center;
+color: black;
+display: block;
+ }
+ 
+ #nav li a:hover {
+	background-color:#fff;
+	color: #333;
+	text-shadow: 1px 1px 1px;
+	transition: all .25s linear;
+}
+
+.clear{
+clear: both;
+}
+
+
+

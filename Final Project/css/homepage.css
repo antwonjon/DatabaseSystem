@@ -1,0 +1,25 @@
+.button {
+	display: block;
+    background-color: navy;
+    color: yellow;
+	margin: 30px;
+    padding: 40px;
+    -webkit-border-radius: 30px;
+	text-align: center;
+	text-decoration:none;
+	font-family: helvetica;
+	text-transform: uppercase;
+	font-size: 30px;
+}
+
+ul
+{
+list-style-type: none;
+}
+
+.button a:hover {
+	background-color:#fff;
+	color: #333;
+	text-shadow: 1px 1px 1px;
+	transition: all .25s linear;
+}

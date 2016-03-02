@@ -1,0 +1,88 @@
+/* Collin and I wrote the following code. Here is code to create the tables for the database schema. for entries like name, composer, and publisher please edit the tables
+to be the same lenght as those in the music table. This was created in the MYSQL workbench so edit the letter casing to fit how you are
+already doing it. If you have any question don't hesitate to call me, Josh*/
+
+
+/* code to create table checkout in schema music_library */
+
+CREATE TABLE `users` (
+  `fname` varchar(45) NOT NULL,
+  `lname` varchar(45) NOT NULL,
+  `email` varchar(45) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `phone_number` int(11) DEFAULT NULL,
+  `organization` varchar(45) DEFAULT NULL,
+  `street` varchar(45) DEFAULT NULL,
+  `city` varchar(45) DEFAULT NULL,
+  `state` varchar(12) DEFAULT NULL,
+  `zipcode` int(11) DEFAULT NULL,
+  `blacklist_reason` varchar(400) DEFAULT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `id_number_UNIQUE` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='stores users';
+
+/* code to create table checkout in schema music_library. 
+*	NOTE: users table must be in place, since checkout references user key
+*/
+	
+CREATE TABLE `checkout` (
+  `Checkout_key` int(11) NOT NULL AUTO_INCREMENT,
+  `num_copies` varchar(45) NOT NULL,
+  `approved` tinyint(1) DEFAULT NULL,
+  `checkout_date` date DEFAULT NULL,
+  `expected_return_date` date DEFAULT NULL,
+  `negligence` tinyint(1) DEFAULT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`Checkout_key`),
+  UNIQUE KEY `Checkout_key_UNIQUE` (`Checkout_key`),
+  KEY `requesting_user_idx` (`user_id`),
+  CONSTRAINT `requesting_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Checkout requests';
+
+
+/* code to create temporary_music_info in schema */
+
+CREATE TABLE `temporary_music_info` (
+  `Checkout_Key` int(11) NOT NULL,
+  `Title` varchar(45) NOT NULL,
+  `Composer` varchar(45) NOT NULL,
+  `Publisher` varchar(45) DEFAULT NULL,
+  `Arranger` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`Checkout_Key`),
+  CONSTRAINT `TempCheckout` FOREIGN KEY (`Checkout_Key`) REFERENCES `checkout` (`Checkout_Key`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+/* code to create action in schema */
+
+CREATE TABLE `action` (
+  `Checkout_Key` int(11) NOT NULL,
+  `Description` varchar(400) DEFAULT NULL,
+  `ActionNumber` int(11) NOT NULL,
+  `Reason` varchar(400) DEFAULT NULL,
+  `Date_Taken` date NOT NULL,
+  `Date_Expected` date DEFAULT NULL,
+  PRIMARY KEY (`Checkout_Key`),
+  CONSTRAINT `ActionCheckout` FOREIGN KEY (`Checkout_Key`) REFERENCES `checkout` (`Checkout_Key`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+/* code to create admin in schema */
+
+CREATE TABLE `admin` (
+  `User_Name` varchar(45) NOT NULL,
+  `Password` varchar(45) NOT NULL,
+  PRIMARY KEY (`User_Name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+/* code to create lost_music in schema */
+
+CREATE TABLE `lost_music` (
+  `Music_Key` int(11) NOT NULL,
+  `Money_For` decimal(4,2) NOT NULL,
+  `Number_Of_Copies` int(11) NOT NULL,
+  `When_To_Replace` date DEFAULT NULL,
+  PRIMARY KEY (`Music_Key`),
+  CONSTRAINT `MusicLost` FOREIGN KEY (`Music_Key`) REFERENCES `music` (`Music_Key`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
